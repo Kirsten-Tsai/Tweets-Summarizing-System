@@ -27,6 +27,9 @@ def authenticate(twitter_auth_filename):
 
     return api
 
+# post["created"] = str(tweet.created_at).split(" ")[0]
+
+
 date_since = "2019-09-23"
 def fetch_tweets(api, ppl, numOfPost, periods):
     trump = {}
@@ -35,7 +38,9 @@ def fetch_tweets(api, ppl, numOfPost, periods):
     post = []
     for tweet in tweepy.Cursor(api.user_timeline, id=ppl, tweet_mode='extended').items(numOfPost * periods):
         if cnt >= numOfPost:
-            trump[docNo] = post
+            # trump[docNo] = post
+            # trump[docNo] = post
+            trump[str(tweet.created_at).split(" ")[0]] = post
             post = []
             cnt = 0
             docNo += 1

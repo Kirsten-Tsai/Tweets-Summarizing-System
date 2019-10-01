@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Articles</title>
+</head>
+<style type="text/css">
+a:link {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
+table {
+  width: 100%;
+}
+
+th {
+  height: 50px;
+}
+</style>
+<body>
+
+<h1 style="">{{account}}'s Favorite Words 😮</h1>
+
+<!-- {% for name, word in ppl %}
+<a href="{{link}}">{{title}}</a></br>
+{% endfor %}
+ -->
+<!-- {% for title, link in people %}
+{{title}} -> {{link}}</a></br>
+{% endfor %}
+ -->
+<table>
+<thead><tr><th>Date</th><th>Favorite Words</th></tr></thead>
+<tbody>
+{% for item in table %}
+<TR>
+   <!-- <TD class="c1"><IMG src="favicon.ico"></TD> -->
+   <TD class="c2">{{item.account}}</TD>
+   <TD class="c3">{{item.symbol}}</TD>
+   <!-- <TD class="c4"><SPAN>{{item.position}}</SPAN></TD> -->
+   <!-- <TD class="c5"><SPAN>{{item.status}}</SPAN></TD> -->
+</TR>
+{% endfor %}
+</tbody>
+</table>
+
+
+</body>
+</html>

@@ -55,7 +55,8 @@ def stemwords(words):
     return stem
 
 def tokenizer(text):
-    return stemwords(tokenize(text))
+    return tokenize(text)
+    # return stemwords(tokenize(text))
 
 def compute_tfidf(tweetsDict):
     """
