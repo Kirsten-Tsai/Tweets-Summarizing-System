@@ -30,7 +30,7 @@ def authenticate(twitter_auth_filename):
 # post["created"] = str(tweet.created_at).split(" ")[0]
 
 
-date_since = "2019-09-23"
+
 def fetch_tweets(api, ppl, numOfPost, periods):
     trump = {}
     cnt = 0 #check if it already numOfPost

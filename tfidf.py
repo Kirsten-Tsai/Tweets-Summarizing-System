@@ -45,6 +45,7 @@ def tokenize(text):
 
     return words
 
+
 def stemwords(words):
     """
     Given a list of tokens/words, return a new list with each word
@@ -73,15 +74,16 @@ def compute_tfidf(tweetsDict):
                         stop_words='english',
                         decode_error = 'ignore')
     
+    newDict = {}
     for account, tweets in tweetsDict.items():
-        tweetsDict[account] = " ".join(tweetsDict[account])
-    corpusList = list(tweetsDict.values())
+        newDict[account] = " ".join(tweetsDict[account])
+    corpusList = list(newDict.values())
     # aList = [item for sublist in tweetsDict.values() for item in sublist]
     # corpus = " ".join(aList)
     # corpusList = list(corpus.values())
 
     tfidf.fit(corpusList)
-    return tfidf, tweetsDict
+    return tfidf
 
 def summarize(tfidf, postList, nameList, n):
     """
@@ -115,4 +117,3 @@ if __name__ == "__main__":
     tfidf, postList = compute_tfidf(tweetsDict) #postList : Dict with values -- all post into a list
     ans = summarize(tfidf, postList, nameList, 10)
     print(ans)
-# print(corpusList)
