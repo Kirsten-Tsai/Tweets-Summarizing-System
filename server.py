@@ -20,10 +20,9 @@ def articles():
     return render_template('articles.html', table = table, account = ppl)
 
 
-############
-numOfPost = 20 #how many post in a corpus
+numOfPost = 100 #how many post in a corpus
 numOfWords = 10 # how many symbolic words you wanna know
-numOfPeriods = 5
+numOfPeriods = 40
 
 api = authenticate("twitter.csv")
 ppl = "realDonaldTrump"
@@ -43,17 +42,13 @@ def toPostList(tweetsDict):
 postList = toPostList(tweetsDict)
 
 ans = summarize(tfidf, postList, dateList, numOfWords)
-# print(ans)
 keywordDict = []
+
 for i in range(len(ans)):
 	tmp = {}
 	for tup in ans[i]:
 		tmp[tup[0]] = tup[1]
 	keywordDict.append(tmp)
-
-# print("dates: ", dates)
-# print("keywordDict: ", keywordDict)
-
 
 maxIndex = []
 for i in range(len(dates)):
@@ -74,17 +69,9 @@ for i in range(len(dates)):
 			maxInd = j
 	maxIndex.append(maxInd)
 
-# print(maxIndex)
 kingMsg = {}
 for index, i in enumerate(maxIndex, 0):
 	kingMsg[dates[index]] = tweetsDict[dates[index]][i]
 
 datePeriod = list(kingMsg.keys())
 dateMsg = list(kingMsg.values())
-print(datePeriod)
-print(dateMsg)
-print(kingMsg)
-# print(keywordDict)
-
-# terms = [" ".join([word[0] for word in ppl])for ppl in ans]
-# print(ans)

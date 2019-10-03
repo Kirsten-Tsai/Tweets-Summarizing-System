@@ -13,9 +13,6 @@ import os
 
 
 def gettext(xmltext):
-    """
-    Parse xmltext and return the text from <title> and <text> tags
-    """
     xmltext = xmltext.encode('ascii', 'ignore') # ensure there are no weird char
     tree = ET.fromstring(xmltext)
     root = ET.ElementTree(tree)
@@ -30,11 +27,6 @@ def gettext(xmltext):
     return word
 
 def tokenize(text):
-    """
-    Tokenize text and return a non-unique list of tokenized words
-    found in the text. Normalize to lowercase, strip punctuation,
-    remove stop words, drop words of length < 3, strip digits.
-    """   
     regex = re.compile('[' + re.escape(string.punctuation) + '0-9\\r\\t\\n]')
     nopunct = regex.sub(" ", text)  # delete stuff but leave at least a space to avoid clumping together
     words = ' '.join(nopunct.split(" "))
@@ -47,27 +39,15 @@ def tokenize(text):
 
 
 def stemwords(words):
-    """
-    Given a list of tokens/words, return a new list with each word
-    stemmed using a PorterStemmer.
-    """
     ps = PorterStemmer()
     stem = [ps.stem(w) for w in words]
     return stem
 
 def tokenizer(text):
-    return tokenize(text)
+    return stemwords(tokenize(text))
     # return stemwords(tokenize(text))
 
 def compute_tfidf(tweetsDict):
-    """
-    Create and return a TfidfVectorizer object after training it on
-    the list of articles pulled from the corpus dictionary. Meaning,
-    call fit() on the list of document strings, which figures out
-    all the inverse document frequencies (IDF) for use later by
-    the transform() function. The corpus argument is a dictionary 
-    mapping file name to xml text.
-    """
     tfidf = TfidfVectorizer(input='content',
                         analyzer='word',
                         tokenizer=tokenizer,
@@ -78,20 +58,12 @@ def compute_tfidf(tweetsDict):
     for account, tweets in tweetsDict.items():
         newDict[account] = " ".join(tweetsDict[account])
     corpusList = list(newDict.values())
-    # aList = [item for sublist in tweetsDict.values() for item in sublist]
-    # corpus = " ".join(aList)
-    # corpusList = list(corpus.values())
 
     tfidf.fit(corpusList)
     return tfidf
 
 def summarize(tfidf, postList, nameList, n):
-    """
-    Given a trained TfidfVectorizer object and some XML text, return
-    up to n (word,score) pairs in a list. Discard any terms with
-    scores < 0.09.
-    """
-    ans = [[] for i in range(len(nameList))] # change 3 to 100
+    ans = [[] for i in range(len(nameList))] 
 
     for i_name in range(len(nameList)):
         text = postList[nameList[i_name]]
@@ -109,9 +81,6 @@ def summarize(tfidf, postList, nameList, n):
 
 if __name__ == "__main__":
     tweetsDict = {'BarackObama': ['On National Voter Registration Day, it’s up to us as citizens to make sure everyone we know can make their voices heard at the ballot box. Check and update your registration at — and tell your friends, too.', 'One challenge will define the future for today’s young generation more dramatically than any other: Climate change. The millions of young people worldwide who’ve organized and joined today’s #ClimateStrike demand action to protect our planet, and they deserve it.', 'Just 16, @GretaThunberg is already one of our planet’s greatest advocates. Recognizing that her generation will bear the brunt of climate change, she’s unafraid to push for real action. She embodies our vision at the @ObamaFoundation: A future shaped by young leaders like her.', 'That’s what Americans do when others are in need – we help. We give. We inspire. Want to make a difference? There are a number of ways you can help right here:', 'Jermaine Bell is just six years old, but when he saw people in need, he took the money he’d been saving for a trip to Disney World and spent it on food and water for South Carolina evacuees.'], 'katyperry': ['Omg woke up to this adorable thread and need to add one that my niece did a few months ago for my sister. It makes my heart burst every time I hear it 😩', 'A @BraggLiveFoods 🍎 (cider vinegar) a day keeps a throat tickle away, but health and wellness close by 🤗 #FBF #ExpoEast', 'Ironic that our smartphones are making us dumbhumans 🙃', 'My characters in FINAL FANTASY BRAVE EXVIUS are #NeverReallyOver, so you can play them #365, but you have to check it out before September 30th! #FFBEWW', 'Fall boot but make it PSL 🍂🍁 (Or maybe you’re more of a unicorn latte 🌈) We gotchu. #ShoesdayTuesday @kpcollections'], 'justinbieber': ['RT @SchmidtsNatural: Here+Now is here, for good! Co-created with @justinbieber, Here+Now combines spicy citrus, warm florals, and deep wood…', '@flakmengo Go again', 'That’s a lot of retweets', 'Retweet this tweet to see this tweet on your twitter when you tweet.', 'You like me?']}
-    # for account, tweets in tweetsDict.items():
-    #     tweetsDict[account] = " ".join(tweetsDict[account])
-    # corpusList = list(tweetsDict.values())
     nameList = ['BarackObama', 'katyperry', 'justinbieber']
 
     tfidf, postList = compute_tfidf(tweetsDict) #postList : Dict with values -- all post into a list
