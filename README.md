@@ -6,7 +6,7 @@
 - Pull twitter data by using tweepy wrapper around the twitter API
 - Give each tweet an importance score by implementing TF-IFG algoeithm.
 - Processed the data by tokenizing with NLTK and stemming with PorterStemmer.
-
+- Build a web server with Flask to demo the web application.
 
 
 ## A screenshot of how the system looks like:
